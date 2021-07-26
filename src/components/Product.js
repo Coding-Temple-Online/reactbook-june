@@ -8,8 +8,12 @@ export const Product = (props) => {
     const { getCart } = useContext(DataContext);
 
     const db = firebase.firestore();
+    let buttonState = 'READY';
+
     const handleClick = (obj) => {
-        // let o = {...obj, quantity}
+        
+        buttonState = 'LOADING';
+
         db.collection('users').doc(currentUser.id).collection('cart').doc(props.product.id).get()
             .then(productRef => {
                     // create data variable, because we need to make sure it exists
@@ -30,8 +34,11 @@ export const Product = (props) => {
                     db.collection('users').doc(currentUser.id).collection('cart').doc(props.product.id).set(data);
                     // console.log(data);
 
-                    // // update currentUser's cart
+                    // update the state of our cart
                     getCart();
+
+                    // 
+                    buttonState = 'READY';
                 })
     }
 
@@ -46,7 +53,13 @@ export const Product = (props) => {
                 </div>
                 <div className="card-body">
                     <img className="card-img-top" src={ props.product.images[0] } alt={ props.product.name } />
-                    <button onClick={() => handleClick(props.product)} className="btn btn-success btn-block" style={{ marginTop: '10px' }}>Add to cart</button>
+                    {
+                        buttonState === 'READY' 
+                        ?
+                            <button onClick={() => handleClick(props.product)} className="btn btn-success btn-block" style={{ marginTop: '10px' }}>Add to cart</button>
+                        :
+                            <button disabled={true} className="btn btn-secondary btn-block" style={{ marginTop: '10px' }}>Please Wait</button>
+                    }
                     <p className="card-text" style={{ marginTop: '10px' }}>{ props.product.description }</p>
                 </div>
             </div>

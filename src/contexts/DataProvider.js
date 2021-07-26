@@ -23,16 +23,24 @@ export const DataProvider = (props) => {
         db.collection('users').doc(currentUser.id).collection('cart').get()
             .then(snapshot =>
             {
-                // console.log(snapshot)
                 snapshot.forEach(ref =>
                 {
-                    data[ ref.id ] = ref.data();
-                    quantity += ref.data().quantity;
-                    subtotal += parseFloat(ref.data().price) * quantity;
-                    taxes += parseFloat(ref.data().tax) * quantity;
-                    grandtotal += subtotal+taxes;
+                    let product = ref.data();
+                    data[ ref.id ] = product
+                    
+                    // update cart values
+                    quantity += product.quantity;
+                    subtotal += parseFloat(product.price) * quantity;
+                    taxes += parseFloat(product.tax) * quantity;
+                    grandtotal += subtotal + taxes;
                 })
-                setCart({ items: data, quantity, subtotal: (subtotal / 100).toFixed(2), taxes: (taxes / 100).toFixed(2), grandtotal: (grandtotal / 100).toFixed(2) });
+                setCart({
+                    items: data, 
+                    quantity, 
+                    subtotal: (subtotal / 100).toFixed(2), 
+                    taxes: (taxes / 100).toFixed(2), 
+                    grandtotal: (grandtotal / 100).toFixed(2) 
+                });
             })
     }
 
@@ -48,10 +56,6 @@ export const DataProvider = (props) => {
             }
             // eslint-disable-next-line
         }, [db, currentUser.loggedIn])
-
-    // useEffect(() => {
-        
-    // })
 
     // const getCartItems = () => {
     //     if (currentUser.loggedIn)
@@ -127,7 +131,7 @@ export const DataProvider = (props) => {
     }, [ currentUser.loggedIn, getPosts ])
 
     return (
-        <DataContext.Provider value={{ postList: [ posts, setPosts ], getPosts, products, cart, getCart } }>
+        <DataContext.Provider value={ { postList: [posts, setPosts], getPosts, products, getCart, cart } }>
             { props.children }
         </DataContext.Provider>
     )

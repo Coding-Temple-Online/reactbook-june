@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { createRef, useRef, useState } from 'react';
+import firebase from '../firebase';
 
 export const CartItem = (props) => {
+    const db = firebase.firestore();
+    const [quantities, setQuantities] = useState([]);
+    const qty = useRef({});
+
+    // console.log(productId.current)
+
     return (
-        <div>
+        <React.Fragment>
             <div className="row">
                 <div className="col-12 col-sm-12 col-md-2 text-center">
                     <img className="img-responsive" src={ props.data.images[0] } alt="prewiew" width="120" height="80" />
@@ -15,11 +22,11 @@ export const CartItem = (props) => {
                 </div>
                 <div className="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
                     <div className="col-3 col-sm-3 col-md-6 text-md-right" style={{ paddingTop: "5px" }}>
-                        <h6><strong>${ props.data.metadata.price }<span className="text-muted">x</span></strong></h6>
+                        <h6><strong>${ props.data.metadata.price } <span className="text-muted">x</span></strong></h6>
                     </div>
                     <div className="col-4 col-sm-4 col-md-4">
                         <div className="quantity">
-                            <input type="number" step="1" max="99" min="1" defaultValue={ props.data.quantity } title="Qty" className="qty" size="4" />
+                            <input type="number" step="1" max="99" min="1" ref={qty} defaultValue={ props.data.quantity } title="Qty" className="qty" size="4" />
                         </div>
                     </div>
                     <div className="col-2 col-sm-2 col-md-2 text-right">
@@ -30,6 +37,6 @@ export const CartItem = (props) => {
                 </div>
             </div>
             <hr />
-        </div>
+        </React.Fragment>
     )
 }

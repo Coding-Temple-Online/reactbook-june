@@ -6,7 +6,6 @@ import { DataContext } from '../contexts/DataProvider';
 export const Navbar = (props) => {
     const { currentUser, logout } = useAuth();
     const { cart } = useContext(DataContext);
-    // console.log(currentUser)
 
     const handleLogin = (e) => {
         e.preventDefault();

@@ -4,8 +4,13 @@ import { DataContext } from '../contexts/DataProvider'
 
 export const Cart = () =>
 {
-    const { cart } = useContext(DataContext)
-    console.log(Object.values(cart.items))
+    const { cart } = useContext(DataContext);
+
+    const handleUpdate = () => {
+        console.log("It works");
+        // console.log(prodQty);
+    }
+
     return (
         <div>
             <h3>Cart</h3>
@@ -20,14 +25,14 @@ export const Cart = () =>
                 </div>
                 <div className="card-body">
 
-                    {/* <!-- PRODUCT --> */}
-                    {Object.values(cart.items).map((itemInfo) => <CartItem key={itemInfo.id} data={itemInfo} />)}
-                    {/* <!-- END PRODUCT --> */}
+                    {/* <!-- PRODUCTS --> */}
+                    { Object.values(cart.items).map(productInfo => <CartItem key={ productInfo.id } data={ productInfo } />) }
+                    {/* <!-- END PRODUCTS --> */}
 
                     <div className="pull-right">
-                        <a href="." className="btn btn-outline-secondary pull-right">
+                        <button onClick={() => handleUpdate()} className="btn btn-outline-secondary pull-right">
                             Update Shopping Cart
-                        </a>
+                        </button>
                     </div>
                 </div>
                 <div className="card-footer">
