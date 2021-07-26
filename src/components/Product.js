@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import firebase from 'firebase';
 import { useAuth } from '../contexts/AuthContext';
+import { DataContext } from '../contexts/DataProvider';
 
 export const Product = (props) => {
     const { currentUser } = useAuth();
+    const { getCart } = useContext(DataContext);
 
     const db = firebase.firestore();
     const handleClick = (obj) => {
@@ -27,6 +29,9 @@ export const Product = (props) => {
                     // Then we will update the currentUser's cart with the product supplied to us from 'data'
                     db.collection('users').doc(currentUser.id).collection('cart').doc(props.product.id).set(data);
                     // console.log(data);
+
+                    // // update currentUser's cart
+                    getCart();
                 })
     }
 
